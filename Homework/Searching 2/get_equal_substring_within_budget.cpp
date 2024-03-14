@@ -35,57 +35,27 @@ s and t consist of only lowercase English letters.
 
 */
 
-#include<iostream>
-#include<limits.h>
-#include<climits>
-using namespace std;
 
-bool isPossible(string &s ,string &t , int mid,int maxCost){
-     int i=0;
-        int j=0;
-        
-        int price = 0;
-        int mini_price = INT_MAX;
 
-        while(j<s.size()){
-            price += abs(s[j] - t[j]);
+       int equalSubstring(string str, string tar, int maxCost) {
+      int n = str.size();
+        int left = 0;
+        int curr_cost = 0;
+        int maxi = 0;
+        for(int right = 0; right < n; right++)
+        {
 
-            if(j -i + 1 == mid){
-                mini_price = min(price,mini_price);
-                price -= abs(s[i]-t[i]);
-
-                i++;
+            curr_cost += abs(str[right] - tar[right]);
+            while(left <= right && curr_cost > maxCost)
+            {
+                curr_cost -= abs(str[left] - tar[left]);
+                left++;
             }
 
-            j++;
+            maxi = max({maxi, right - left + 1});
         }
 
-        return (mini_price <= maxCost);
-}
+        return maxi;
 
-int solve(string &s ,string &t, int maxCost){
-    int start=0;
-    int end=s.size()+1;
-    int ans=-1;
-    while(start<=end){
-        int mid=start+(end-start)/2;
-        if(isPossible(s,t,mid,maxCost)){
-            ans=mid;
-            start=mid+1;
-        }
-        else{
-            end=mid-1;
-        }
+        
     }
-    return ans;
-}
-
-
-int main(){
-    string s="abcd";
-    string t="bcdf";
-    int maxCost=3;
-    int ans=solve(s,t,maxCost);
-    cout<<ans;
-    return 0;
-}
