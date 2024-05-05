@@ -117,3 +117,38 @@ int solveUsingTablu(vector<int> &nums ){
     return ans;
     }
 };
+
+
+//Greedy apporach
+class Solution {
+public:
+    int bs(vector<int> &parent, int val){
+        int start=0;
+        int end=parent.size()-1;
+        while(start<end){
+            int mid=start+(end-start)/2;
+            if(parent[mid]>=val){
+                end=mid;
+            }
+            else{
+                start=mid+1;
+            }
+        }
+        return start;
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        vector<int> parent;
+        parent.push_back(nums[0]);
+        for(int i=1;i<nums.size();i++){
+            if(parent[parent.size()-1]<nums[i]){
+                parent.push_back(nums[i]);
+            }
+            else{
+                int index=bs(parent,nums[i]);
+                parent[index]=nums[i];
+            }
+        }
+        
+        return parent.size();
+    }
+};
