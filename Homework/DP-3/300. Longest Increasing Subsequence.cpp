@@ -1,8 +1,5 @@
 /*
 Given an integer array nums, return the length of the longest strictly increasing subsequence.
-
- 
-
 Example 1:
 
 Input: nums = [10,9,2,5,3,7,101,18]
