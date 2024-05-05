@@ -26,6 +26,35 @@ Constraints:
 
 Follow up: Can you come up with an algorithm that runs in O(n log(n)) time complexity?
   */
+
+//recurrsion------------------------------------------------------------>
+class Solution {
+public:
+
+int solve(vector<int> &nums , int prev ,int curr){
+    //base case
+    if(curr>=nums.size()){
+        return 0;
+    }
+
+    int include=0;
+    if(prev==-1 || nums[prev]<nums[curr]){
+         include=1+solve(nums,curr,curr+1);
+    }
+
+    int exclude=solve(nums,prev,curr+1);
+    int ans=max(include,exclude);
+
+    return ans;
+}
+
+    int lengthOfLIS(vector<int>& nums) {
+    int previous=-1;
+    int curr=0;
+    int ans=solve(nums,previous,curr);
+    return ans;
+    }
+};
 //Memoisation-------------------------------------------------------->
 class Solution {
 public:
