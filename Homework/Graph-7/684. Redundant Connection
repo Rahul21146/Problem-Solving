@@ -1,0 +1,36 @@
+class Solution {
+    vector<int> dsu;
+    vector<int> size;
+public:
+    int find(int v) {
+        if (dsu[v] == v) {
+            return v;
+        }
+        return dsu[v] = find(dsu[v]);
+    }
+
+    void uni(int v1, int v2) {
+        if (size[v1] < size[v2]) {
+            swap(v1, v2);
+        }
+        size[v1] += size[v2];
+        dsu[v2] = v1;
+    }
+
+    vector<int> findRedundantConnection(const vector<vector<int>>& edges) {
+        int n = edges.size();
+        dsu = vector<int>(n);
+        size = vector<int>(n, 1);
+        iota(dsu.begin(), dsu.end(), 0);
+        for (uint32_t i = 0; i < n; ++i) {
+            int v1 = find(edges[i][0] - 1);
+            int v2 = find(edges[i][1] - 1);
+            if (v1 == v2) {
+                return edges[i];
+            } else {
+                uni(v1, v2);
+            }
+        }
+        return {0, 0};
+    }
+};
