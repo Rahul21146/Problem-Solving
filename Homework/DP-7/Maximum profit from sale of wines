@@ -1,0 +1,72 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define N 1000
+
+int dp[N][N];
+int sell[N][N];
+
+int maxProfitUtil(int price[], int begin, int end, int n)
+{
+    if (dp[begin][end] != -1)
+        return dp[begin][end];
+
+    int year = n - (end - begin);
+
+    if (begin == end)
+        return year * price[begin];
+
+    int x = price[begin] * year + maxProfitUtil(price, begin + 1, end, n);
+    int y = price[end] * year + maxProfitUtil(price, begin, end - 1, n);
+
+    int ans = max(x, y);
+    dp[begin][end] = ans;
+
+    if (x >= y)
+        sell[begin][end] = 0;
+    else
+        sell[begin][end] = 1;
+
+    return ans;
+}
+
+int maxProfit(int price[], int n)
+{
+    for (int i = 0; i < N; i++)
+        for (int j = 0; j < N; j++)
+            dp[i][j] = -1;
+
+    int ans = maxProfitUtil(price, 0, n - 1, n);
+
+    int i = 0, j = n - 1;
+
+    while (i <= j)
+    {
+        if (sell[i][j] == 0)
+        {
+            cout << "beg ";
+            i++;
+        }
+        else
+        {
+            cout << "end ";
+            j--;
+        }
+    }
+
+    cout << endl;
+
+    return ans;
+}
+
+int main()
+{
+    int price[] = {2, 4, 6, 2, 5};
+    int n = sizeof(price) / sizeof(price[0]);
+
+    int ans = maxProfit(price, n);
+
+    cout << ans << endl;
+
+    return 0;
+}
